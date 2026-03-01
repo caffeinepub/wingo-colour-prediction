@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Fonts ─────────────────────────────────────────── */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque[opsz,wdth,wght].woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora[wght].woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono[wght].woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Design Tokens ──────────────────────────────────── */
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Dark casino theme */
+    --background: 0.1 0.005 280;
+    --foreground: 0.96 0.01 90;
+    --card: 0.14 0.008 280;
+    --card-foreground: 0.96 0.01 90;
+    --popover: 0.16 0.008 280;
+    --popover-foreground: 0.96 0.01 90;
+
+    /* Gold primary */
+    --primary: 0.78 0.16 85;
+    --primary-foreground: 0.1 0.005 280;
+
+    --secondary: 0.2 0.01 280;
+    --secondary-foreground: 0.85 0.01 90;
+
+    --muted: 0.18 0.008 280;
+    --muted-foreground: 0.55 0.01 280;
+
+    --accent: 0.22 0.012 280;
+    --accent-foreground: 0.96 0.01 90;
+
+    /* Red destructive */
+    --destructive: 0.62 0.26 27;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.25 0.01 280;
+    --input: 0.22 0.01 280;
+    --ring: 0.78 0.16 85;
+
+    /* Game colours */
+    --colour-red: 0.62 0.24 27;
+    --colour-green: 0.65 0.2 145;
+    --colour-violet: 0.58 0.22 295;
+    --colour-gold: 0.78 0.16 85;
+
+    --chart-1: 0.62 0.24 27;
+    --chart-2: 0.65 0.2 145;
+    --chart-3: 0.58 0.22 295;
+    --chart-4: 0.78 0.16 85;
+    --chart-5: 0.7 0.15 200;
+
+    --sidebar: 0.12 0.006 280;
+    --sidebar-foreground: 0.96 0.01 90;
+    --sidebar-primary: 0.78 0.16 85;
+    --sidebar-primary-foreground: 0.1 0.005 280;
+    --sidebar-accent: 0.2 0.01 280;
+    --sidebar-accent-foreground: 0.96 0.01 90;
+    --sidebar-border: 0.25 0.01 280;
+    --sidebar-ring: 0.78 0.16 85;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Sora", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ─── Game Specific Styles ───────────────────────────── */
+@layer utilities {
+  .font-display {
+    font-family: "Bricolage Grotesque", sans-serif;
+  }
+
+  .font-mono-game {
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  /* Colour button styles */
+  .btn-red {
+    background: oklch(var(--colour-red));
+    color: #fff;
+  }
+  .btn-red:hover {
+    background: oklch(0.66 0.24 27);
+  }
+
+  .btn-green {
+    background: oklch(var(--colour-green));
+    color: #fff;
+  }
+  .btn-green:hover {
+    background: oklch(0.68 0.2 145);
+  }
+
+  .btn-violet {
+    background: oklch(var(--colour-violet));
+    color: #fff;
+  }
+  .btn-violet:hover {
+    background: oklch(0.62 0.22 295);
+  }
+
+  /* Number colour dot */
+  .num-red {
+    background: oklch(var(--colour-red));
+  }
+  .num-green {
+    background: oklch(var(--colour-green));
+  }
+  .num-violet {
+    background: oklch(var(--colour-violet));
+  }
+
+  /* Glow effects */
+  .glow-gold {
+    box-shadow: 0 0 20px oklch(0.78 0.16 85 / 0.35),
+      0 0 40px oklch(0.78 0.16 85 / 0.15);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 20px oklch(0.62 0.24 27 / 0.4),
+      0 0 40px oklch(0.62 0.24 27 / 0.2);
+  }
+
+  .glow-green {
+    box-shadow: 0 0 20px oklch(0.65 0.2 145 / 0.4),
+      0 0 40px oklch(0.65 0.2 145 / 0.2);
+  }
+
+  .glow-violet {
+    box-shadow: 0 0 20px oklch(0.58 0.22 295 / 0.4),
+      0 0 40px oklch(0.58 0.22 295 / 0.2);
+  }
+
+  /* Noise texture overlay */
+  .noise-overlay {
+    position: relative;
+  }
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: oklch(0.14 0.008 280 / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.3 0.012 280 / 0.5);
+  }
+
+  /* Timer pulse */
+  @keyframes timer-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .timer-pulse {
+    animation: timer-pulse 1s ease-in-out infinite;
+  }
+
+  /* Coin sparkle */
+  @keyframes coin-spin {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+
+  /* Win flash */
+  @keyframes win-flash {
+    0%,
+    100% {
+      background: oklch(0.65 0.2 145 / 0.2);
+    }
+    50% {
+      background: oklch(0.65 0.2 145 / 0.5);
+    }
+  }
+
+  .win-flash {
+    animation: win-flash 0.8s ease-in-out 3;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: oklch(0.14 0.008 280);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.3 0.01 280);
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.78 0.16 85 / 0.6);
+  }
+}
