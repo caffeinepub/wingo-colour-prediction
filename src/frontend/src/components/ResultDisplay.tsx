@@ -21,24 +21,36 @@ const NUMBER_COLOURS: Record<number, "red" | "green" | "violet"> = {
 
 const COLOUR_STYLES = {
   red: {
-    bg: "oklch(0.62 0.24 27 / 0.15)",
-    text: "oklch(0.7 0.2 27)",
-    border: "oklch(0.62 0.24 27 / 0.4)",
-    glow: "oklch(0.62 0.24 27)",
+    bg: "linear-gradient(135deg, oklch(0.66 0.28 18) 0%, oklch(0.50 0.26 28) 100%)",
+    bgSubtle: "oklch(0.58 0.26 22 / 0.15)",
+    text: "oklch(0.92 0.06 22)",
+    border: "oklch(0.58 0.26 22 / 0.6)",
+    glow: "oklch(0.58 0.26 22)",
+    badgeBg: "oklch(0.58 0.26 22 / 0.2)",
+    badgeText: "oklch(0.82 0.2 22)",
+    badgeBorder: "oklch(0.58 0.26 22 / 0.4)",
     label: "RED",
   },
   green: {
-    bg: "oklch(0.65 0.2 145 / 0.15)",
-    text: "oklch(0.72 0.18 145)",
-    border: "oklch(0.65 0.2 145 / 0.4)",
-    glow: "oklch(0.65 0.2 145)",
+    bg: "linear-gradient(135deg, oklch(0.68 0.24 148) 0%, oklch(0.52 0.22 158) 100%)",
+    bgSubtle: "oklch(0.62 0.22 148 / 0.15)",
+    text: "oklch(0.96 0.04 148)",
+    border: "oklch(0.62 0.22 148 / 0.6)",
+    glow: "oklch(0.62 0.22 148)",
+    badgeBg: "oklch(0.62 0.22 148 / 0.2)",
+    badgeText: "oklch(0.82 0.18 148)",
+    badgeBorder: "oklch(0.62 0.22 148 / 0.4)",
     label: "GREEN",
   },
   violet: {
-    bg: "oklch(0.58 0.22 295 / 0.15)",
-    text: "oklch(0.68 0.2 295)",
-    border: "oklch(0.58 0.22 295 / 0.4)",
-    glow: "oklch(0.58 0.22 295)",
+    bg: "linear-gradient(135deg, oklch(0.62 0.28 300) 0%, oklch(0.46 0.26 310) 100%)",
+    bgSubtle: "oklch(0.55 0.26 300 / 0.15)",
+    text: "oklch(0.96 0.04 300)",
+    border: "oklch(0.55 0.26 300 / 0.6)",
+    glow: "oklch(0.55 0.26 300)",
+    badgeBg: "oklch(0.55 0.26 300 / 0.2)",
+    badgeText: "oklch(0.8 0.2 300)",
+    badgeBorder: "oklch(0.55 0.26 300 / 0.4)",
     label: "VIOLET",
   },
 };
@@ -60,44 +72,63 @@ export default function ResultDisplay({ round }: ResultDisplayProps) {
         {hasResult && resultNum !== null && colourStyle ? (
           <motion.div
             key={`result-${round!.id}-${resultNum}`}
-            initial={{ scale: 0.5, rotate: -10, opacity: 0 }}
+            initial={{ scale: 0.3, rotate: -20, opacity: 0 }}
             animate={{ scale: 1, rotate: 0, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
+            exit={{ scale: 0.7, opacity: 0 }}
             transition={{
-              duration: 0.5,
+              duration: 0.55,
               ease: [0.34, 1.56, 0.64, 1],
             }}
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-3"
           >
-            {/* Big number */}
-            <div
-              className="w-20 h-20 rounded-2xl flex items-center justify-center font-display font-black text-4xl"
-              style={{
-                background: colourStyle.bg,
-                border: `2px solid ${colourStyle.border}`,
-                color: colourStyle.text,
-                boxShadow:
-                  `0 0 30px ${colourStyle.glow} / 0.3), 0 0 60px ${colourStyle.glow} / 0.1)`.replace(
-                    "/ 0",
-                    "/ 0",
-                  ),
-                filter: `drop-shadow(0 0 12px ${colourStyle.glow})`,
-              }}
-            >
-              {resultNum}
+            {/* Big number tile with glow */}
+            <div className="relative">
+              {/* Outer glow ring */}
+              <div
+                className="absolute inset-0 rounded-2xl"
+                style={{
+                  background: colourStyle.bgSubtle,
+                  boxShadow:
+                    `0 0 40px ${colourStyle.glow} / 0.4), 0 0 80px ${colourStyle.glow} / 0.15)`.replace(
+                      "/ 0",
+                      "/ 0",
+                    ),
+                  filter: "blur(8px)",
+                  transform: "scale(1.15)",
+                }}
+              />
+              <div
+                className="relative w-24 h-24 rounded-2xl flex items-center justify-center font-display font-black"
+                style={{
+                  background: colourStyle.bg,
+                  border: `2px solid ${colourStyle.border}`,
+                  color: colourStyle.text,
+                  fontSize: "2.6rem",
+                  boxShadow: `
+                    0 0 30px ${colourStyle.glow} / 0.35),
+                    0 0 60px ${colourStyle.glow} / 0.15),
+                    inset 0 1px 0 oklch(1 0 0 / 0.15)
+                  `.replace(/\/ 0\)/g, "/ 0)"),
+                }}
+              >
+                {resultNum}
+              </div>
             </div>
 
-            {/* Colour badge */}
-            <div
-              className="px-4 py-1 rounded-full text-xs font-bold font-mono tracking-widest"
+            {/* Colour name badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="px-5 py-1.5 rounded-full text-xs font-bold font-mono tracking-widest"
               style={{
-                background: colourStyle.bg,
-                color: colourStyle.text,
-                border: `1px solid ${colourStyle.border}`,
+                background: colourStyle.badgeBg,
+                color: colourStyle.badgeText,
+                border: `1px solid ${colourStyle.badgeBorder}`,
               }}
             >
-              {colourStyle.label}
-            </div>
+              ● {colourStyle.label}
+            </motion.div>
           </motion.div>
         ) : (
           <motion.div
@@ -105,15 +136,29 @@ export default function ResultDisplay({ round }: ResultDisplayProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="w-20 h-20 rounded-2xl flex items-center justify-center"
-            style={{
-              background: "oklch(0.18 0.008 280)",
-              border: "2px solid oklch(0.25 0.01 280)",
-            }}
+            className="flex flex-col items-center gap-3"
           >
-            <span className="font-display font-bold text-3xl text-muted-foreground">
-              ?
-            </span>
+            <div
+              className="w-24 h-24 rounded-2xl flex items-center justify-center"
+              style={{
+                background: "oklch(0.16 0.012 260)",
+                border: "2px solid oklch(0.24 0.012 260)",
+              }}
+            >
+              <span className="font-display font-bold text-4xl text-muted-foreground">
+                ?
+              </span>
+            </div>
+            <div
+              className="px-5 py-1.5 rounded-full text-xs font-mono"
+              style={{
+                background: "oklch(0.16 0.01 260)",
+                color: "oklch(0.4 0.012 260)",
+                border: "1px solid oklch(0.22 0.012 260)",
+              }}
+            >
+              PENDING
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

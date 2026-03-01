@@ -1,45 +1,50 @@
-# WinGo Colour Prediction App
+# WinGo Colour Prediction
 
 ## Current State
-New project -- no existing code.
+- Working WinGo colour prediction app with Motoko backend
+- Features: login, betting on colour/number, round timer, result display, history tab, leaderboard tab, admin panel
+- Backend APIs: placeBet, startNewRound, resolveRound, getLeaderboard, getBetHistory, getCurrentRound, getUserProfile
+- Basic dark UI with functional components
 
 ## Requested Changes (Diff)
 
 ### Add
-- User registration/login with Internet Identity
-- Starting virtual coins (e.g. 1000 coins) for each new user
-- WinGo-style game: random result from 0-9 each round
-- Colour mapping: 1,3,7,9 = Red | 2,4,6,8 = Green | 0,5 = Violet
-- Bet placement: user picks a number (0-9) or a colour (Red/Green/Violet) and bets an amount
-- Payout logic:
-  - Correct number prediction: 9x bet
-  - Correct colour prediction: 2x bet
-  - Wrong prediction: lose bet amount
-- Round timer: 30 seconds per round, then result is revealed
-- Bet history: each user can see their past bets and outcomes
-- Leaderboard: top users by coin balance
-- Multiplayer: multiple users can bet in the same round simultaneously
+- Confetti animation after every result (win or loss) using canvas-confetti or CSS particles
+- Bet history strip showing last 10 results at top of game screen (colored circles like Tiranga/Daman style)
+- Multiple quick bet amounts: 10, 50, 100, 500, 1000 coins
+- Win/Loss notification popup (large modal/toast) showing result, win amount, or loss amount
+- Professional header with app logo, user balance with coin icon prominently displayed
+- Multiplier info display: Color bets 2x, Number bets 9x
+- Countdown timer visual overhaul -- large, prominent circular timer like 91 Club
+- Result history row -- compact colored circles (last 20 results from bet history)
+- Bottom navigation bar with Game, History, Leaderboard icons
 
 ### Modify
-- N/A
+- Complete UI overhaul to match Tiranga/Daman/91 Club professional style:
+  - Deep dark background (near black with slight purple/blue tint)
+  - Vibrant gradient header (green-to-dark or purple-to-dark gradient like Tiranga)
+  - Colour buttons: large, pill-shaped with gradient fills (Red=bright red gradient, Green=bright green gradient, Violet=purple gradient)
+  - Number grid: 0-9 large colorful tiles with colour dot indicators
+  - Bet amount section: row of quick chips (10/50/100/500/1000) styled as casino chips
+  - Result display: large animated number with glow + color ring
+  - Timer: large SVG circular timer with glow effect, prominent countdown number
+- BettingPanel: add multiplier badges on colour/number buttons (2x / 9x)
+- Result history visible on game tab (last 10 rounds shown as colored dots/circles)
+- Leaderboard: show rank badges (gold/silver/bronze for top 3), user avatars with initials
 
 ### Remove
-- N/A
+- Settings tab (admin panel stays inline below game)
+- Footer text (keep it minimal)
 
 ## Implementation Plan
-1. Backend (Motoko):
-   - User profile management: store coin balance per user (keyed by Principal)
-   - Round management: create rounds with a timer, store bets per round
-   - Place bet: validate user has enough coins, record bet (number or colour), deduct coins
-   - Resolve round: generate random result (0-9), calculate payouts, update balances
-   - Get round result and history
-   - Leaderboard: return top users by balance
-   - Get user profile (balance, bet history)
-
-2. Frontend (React):
-   - Home/login screen with Internet Identity
-   - Game screen: current round timer, betting panel (choose number or colour, enter amount)
-   - Live round results display
-   - Bet history tab
-   - Leaderboard tab
-   - Coin balance visible at all times
+1. Install canvas-confetti package for confetti animation
+2. Create ConfettiEffect component triggered after each resolved round result
+3. Create ResultHistoryStrip component showing last 10-20 results as colored circles
+4. Redesign GameScreen.tsx -- new header with gradient, prominent balance display
+5. Redesign BettingPanel.tsx -- casino chip style quick amounts, larger color/number buttons with multipliers
+6. Redesign ResultDisplay.tsx -- larger with glow animations, full result reveal
+7. Redesign RoundTimer.tsx -- larger circular timer, more prominent countdown
+8. Add WinLossModal component -- popup showing win/loss result after round resolves
+9. Update LeaderboardTab.tsx -- gold/silver/bronze rank badges
+10. Update HistoryTab.tsx -- cleaner layout with result color indicators
+11. Integrate confetti trigger in GameScreen when round resolves
